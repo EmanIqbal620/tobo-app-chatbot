@@ -162,7 +162,9 @@ const ChatInterface: React.FC<ChatProps> = ({ userId, token, tasks = [] }) => {
 
     try {
       // OPTIMIZATION: Direct fetch with timeout
-      const apiUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000').replace(/\/+$/, '');
+      const rawApiUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000').replace(/\/+$/, '');
+      // Avoid Vercel rewrite auth header issue: use direct backend URL for relative paths
+      const apiUrl = rawApiUrl.startsWith('/') ? 'https://emaniqbal-todoapp.hf.space' : rawApiUrl;
       const baseUrl = apiUrl.endsWith('/api') ? apiUrl : `${apiUrl}/api`;
       const response = await fetch(`${baseUrl}/chat-fast/`, {
         method: 'POST',

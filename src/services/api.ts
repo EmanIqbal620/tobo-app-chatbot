@@ -1,6 +1,9 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from 'axios'
 import { getAccessToken, getRefreshToken, setTokens, clearTokens } from '@/utils/tokenManager'
 
+// Direct backend URL - avoids Vercel rewrite auth header issue
+const BACKEND_API_URL = 'https://emaniqbal-todoapp.hf.space';
+
 // Create the base axios instance
 const api: AxiosInstance = axios.create({
   baseURL: (() => {
@@ -10,15 +13,17 @@ const api: AxiosInstance = axios.create({
       throw new Error("NEXT_PUBLIC_API_URL environment variable is missing. Please set it in your environment.");
     }
 
-    // Ensure HTTPS for production deployments (except for hf.space which handles redirects differently)
+    // If the URL is a relative path (e.g. "/api"), it's Vercel rewrite mode.
+    // Vercel external rewrites use HTTP redirect which strips Authorization headers.
+    // Use the direct backend URL instead with CORS.
     let processedBaseUrl = baseUrl;
-    if (baseUrl.includes('hf.space')) {
-      // For Hugging Face spaces, we'll use HTTP to avoid redirect issues
+    if (baseUrl.startsWith('/')) {
+      processedBaseUrl = BACKEND_API_URL;
+    } else if (baseUrl.includes('hf.space')) {
       if (!baseUrl.startsWith('http://') && !baseUrl.startsWith('https://')) {
         processedBaseUrl = `https://${baseUrl}`;
       }
-      // If it's already https://, leave as is - let the service handle its own redirects
-    } else if (!baseUrl.startsWith('/') && !baseUrl.startsWith('https://') && !baseUrl.startsWith('http://')) {
+    } else if (!baseUrl.startsWith('https://') && !baseUrl.startsWith('http://')) {
       processedBaseUrl = `https://${baseUrl}`;
     }
 
@@ -26,8 +31,8 @@ const api: AxiosInstance = axios.create({
     const cleanBaseUrl = processedBaseUrl.endsWith('/') ? processedBaseUrl.slice(0, -1) : processedBaseUrl;
     // For Docker setup, if the base URL is just "/api", use it as-is
     // Otherwise, append /api to the base URL for normal deployments
-    if (cleanBaseUrl === '/api') {
-      return '/api';
+    if (cleanBaseUrl.endsWith('/api')) {
+      return cleanBaseUrl;
     } else {
       return `${cleanBaseUrl}/api`;
     }
@@ -70,26 +75,26 @@ api.interceptors.response.use(
         const refreshToken = getRefreshToken()
 
         if (refreshToken) {
-          const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+          const rawBaseUrl = process.env.NEXT_PUBLIC_API_URL;
 
-          if (!baseUrl) {
+          if (!rawBaseUrl) {
             throw new Error("NEXT_PUBLIC_API_URL environment variable is missing. Please set it in your environment.");
           }
 
-          // Ensure HTTPS for production deployments (except for hf.space which handles redirects differently)
-          let processedBaseUrl = baseUrl;
-          if (baseUrl.includes('hf.space')) {
-            // For Hugging Face spaces, we'll use HTTP to avoid redirect issues
-            if (!baseUrl.startsWith('http://') && !baseUrl.startsWith('https://')) {
-              processedBaseUrl = `https://${baseUrl}`;
+          // If the URL is a relative path, use the hardcoded backend URL directly
+          let processedBaseUrl = rawBaseUrl.startsWith('/') ? BACKEND_API_URL : rawBaseUrl;
+          if (processedBaseUrl.includes('hf.space')) {
+            if (!processedBaseUrl.startsWith('http://') && !processedBaseUrl.startsWith('https://')) {
+              processedBaseUrl = `https://${processedBaseUrl}`;
             }
-            // If it's already https://, leave as is - let the service handle its own redirects
-          } else if (!baseUrl.startsWith('https://') && !baseUrl.startsWith('http://')) {
-            processedBaseUrl = `https://${baseUrl}`;
+          } else if (!processedBaseUrl.startsWith('https://') && !processedBaseUrl.startsWith('http://')) {
+            processedBaseUrl = `https://${processedBaseUrl}`;
           }
 
           const cleanBaseUrl = processedBaseUrl.endsWith('/') ? processedBaseUrl.slice(0, -1) : processedBaseUrl;
-          const response = await axios.post(`${cleanBaseUrl}/auth/refresh`, {
+          // Append /api if not already present (refresh endpoint is at /api/auth/refresh)
+          const refreshUrl = cleanBaseUrl.endsWith('/api') ? `${cleanBaseUrl}/auth/refresh` : `${cleanBaseUrl}/api/auth/refresh`;
+          const response = await axios.post(refreshUrl, {
             refresh_token: refreshToken
           })
 

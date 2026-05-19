@@ -21,24 +21,21 @@ class ApiClient {
 
     let baseUrl = config.baseUrl || envBaseUrl;
 
-    // Ensure HTTPS for production deployments (except for hf.space which handles redirects differently)
-    if (baseUrl.includes('hf.space')) {
-      // For Hugging Face spaces, we'll use HTTP to avoid redirect issues
+    // If the URL is a relative path (e.g. "/api"), it's Vercel rewrite mode
+    // which strips Authorization headers on cross-origin redirects.
+    // Use the direct backend URL with CORS instead.
+    if (baseUrl.startsWith('/')) {
+      baseUrl = 'https://emaniqbal-todoapp.hf.space';
+    } else if (baseUrl.includes('hf.space')) {
       if (!baseUrl.startsWith('http://') && !baseUrl.startsWith('https://')) {
         baseUrl = `https://${baseUrl}`;
       }
-      // If it's already https://, leave as is - let the service handle its own redirects
-    } else if (!baseUrl.startsWith('/') && !baseUrl.startsWith('https://') && !baseUrl.startsWith('http://')) {
+    } else if (!baseUrl.startsWith('https://') && !baseUrl.startsWith('http://')) {
       baseUrl = `https://${baseUrl}`;
     }
 
-    // For Docker setup, if the base URL is just "/api", use it as-is
-    // Otherwise, append /api to the base URL for normal deployments
-    if (baseUrl === '/api') {
-      this.baseUrl = '/api';
-    } else {
-      this.baseUrl = baseUrl.endsWith('/api') ? baseUrl : `${baseUrl}/api`;
-    }
+    // Append /api to the base URL for normal deployments
+    this.baseUrl = baseUrl.endsWith('/api') ? baseUrl : `${baseUrl}/api`;
     this.defaultHeaders = {
       'Content-Type': 'application/json',
       ...config.defaultHeaders,

@@ -15,15 +15,10 @@ const nextConfig = {
   compress: true,
   
   // Keep API proxying
-  trailingSlash: true,
-  async rewrites() {
-    return [
-      {
-        source: '/api/:path*',
-        destination: 'https://emaniqbal-todoapp.hf.space/api/:path*'
-      }
-    ]
-  },
+  // NOTE: Rewrites removed because Vercel uses HTTP redirect for external URLs,
+  // which strips the Authorization header on cross-origin redirects.
+  // Frontend now makes direct CORS requests to the backend instead.
+  // trailingSlash: true, -- disabled to avoid 308 redirects that cause auth issues
   
   // Optimize bundle size
   webpack: (config, { isServer, dev }) => {
