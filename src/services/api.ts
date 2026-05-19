@@ -18,7 +18,7 @@ const api: AxiosInstance = axios.create({
         processedBaseUrl = `https://${baseUrl}`;
       }
       // If it's already https://, leave as is - let the service handle its own redirects
-    } else if (!baseUrl.startsWith('https://') && !baseUrl.startsWith('http://')) {
+    } else if (!baseUrl.startsWith('/') && !baseUrl.startsWith('https://') && !baseUrl.startsWith('http://')) {
       processedBaseUrl = `https://${baseUrl}`;
     }
 

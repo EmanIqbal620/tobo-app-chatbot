@@ -162,8 +162,9 @@ const ChatInterface: React.FC<ChatProps> = ({ userId, token, tasks = [] }) => {
 
     try {
       // OPTIMIZATION: Direct fetch with timeout
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
-      const response = await fetch(`${apiUrl}/api/chat-fast/`, {
+      const apiUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000').replace(/\/+$/, '');
+      const baseUrl = apiUrl.endsWith('/api') ? apiUrl : `${apiUrl}/api`;
+      const response = await fetch(`${baseUrl}/chat-fast/`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
