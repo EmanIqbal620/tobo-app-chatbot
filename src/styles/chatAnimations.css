@@ -1,0 +1,96 @@
+/* Bounce animation for typing indicators */
+.animate-bounce-delayed-0 {
+  animation: bounce 1.2s infinite;
+  animation-delay: 0ms;
+}
+
+.animate-bounce-delayed-300 {
+  animation: bounce 1.2s infinite;
+  animation-delay: 300ms;
+}
+
+.animate-bounce-delayed-600 {
+  animation: bounce 1.2s infinite;
+  animation-delay: 600ms;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+/* Smooth transitions for chat elements */
+.chat-message-enter {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.chat-message-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 300ms, transform 300ms;
+}
+
+/* Pulse animation for new messages */
+.pulse-on-new {
+  animation: pulse 0.5s ease-in;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(79, 70, 229, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(79, 70, 229, 0);
+  }
+}
+
+/* Hide scrollbar for horizontal scrolling areas */
+.hide-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+/* Slide in animation for quick actions */
+.slide-in-from-bottom {
+  animation: slideInFromBottom 0.3s ease-out forwards;
+}
+
+@keyframes slideInFromBottom {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Ensure text visibility in both themes */
+.chat-message-text {
+  color: inherit !important;
+}
+
+.chat-input-text {
+  color: inherit !important;
+}
+
+.chat-header-text {
+  color: inherit !important;
+}
+
+.chat-welcome-text {
+  color: inherit !important;
+}

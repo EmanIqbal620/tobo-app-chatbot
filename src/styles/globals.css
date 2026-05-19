@@ -1,0 +1,127 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'Inter', sans-serif;
+  }
+
+  body {
+    background-color: #0D0E0E;
+    color: #FFFFFF;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    min-height: 100vh;
+    transition: background-color, color 0.3s ease;
+  }
+
+  /* Typography scale based on theme configuration */
+  h1 {
+    @apply text-4xl md:text-5xl font-bold leading-tight;
+  }
+
+  h2 {
+    @apply text-3xl md:text-4xl font-bold leading-snug;
+  }
+
+  h3 {
+    @apply text-2xl md:text-3xl font-semibold leading-relaxed;
+  }
+
+  h4 {
+    @apply text-xl md:text-2xl font-medium;
+  }
+
+  h5 {
+    @apply text-lg md:text-xl font-medium;
+  }
+
+  h6 {
+    @apply text-base md:text-lg font-medium;
+  }
+
+  p {
+    @apply text-base leading-normal;
+  }
+
+  .text-display {
+    @apply text-5xl md:text-6xl font-bold;
+  }
+
+  .text-headline {
+    @apply text-4xl md:text-5xl font-bold;
+  }
+
+  .text-title {
+    @apply text-2xl font-semibold;
+  }
+
+  .text-subtitle {
+    @apply text-lg font-medium;
+  }
+
+  .text-body {
+    @apply text-base leading-relaxed;
+  }
+
+  .text-body-sm {
+    @apply text-sm leading-6;
+  }
+
+  .text-caption {
+    @apply text-xs leading-5;
+  }
+
+  .text-overline {
+    @apply text-xs font-semibold uppercase tracking-wider;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-accent-500 text-white px-4 py-2 rounded-md hover:bg-accent-600 transition-colors duration-300;
+  }
+
+  .btn-secondary {
+    @apply bg-surface-700 text-text-primary px-4 py-2 rounded-md hover:bg-surface-600 transition-colors duration-300 border border-border-light;
+  }
+
+  .card {
+    @apply bg-surface-700 rounded-lg shadow-card border border-border-light p-6;
+  }
+
+  /* Remove glassmorphism styles - using matte surfaces instead */
+  .input-field {
+    @apply w-full px-3 py-2 border border-border-light rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500/50 transition-all duration-300 bg-surface-700 text-text-primary;
+  }
+
+  .container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  /* New theme components following the design rules */
+  .matte-card {
+    @apply bg-surface-700 rounded-xl shadow-card border border-border-light p-6 transition-all duration-300;
+  }
+
+  .matte-button {
+    @apply bg-surface-600 text-text-primary px-4 py-2 rounded-lg border border-border-light hover:bg-surface-500 transition-all duration-300 hover:scale-[1.02];
+  }
+
+  .matte-input {
+    @apply w-full px-4 py-3 rounded-lg border border-border-light bg-surface-700 text-text-primary focus:outline-none focus:ring-2 focus:ring-accent-500/50 transition-all duration-300;
+  }
+
+  .matte-modal {
+    @apply bg-surface-700 rounded-xl shadow-card border border-border-light p-6 max-w-lg w-full;
+  }
+
+  /* Consistent spacing utilities */
+  .space-xs { @apply my-2; } /* 8px */
+  .space-sm { @apply my-3; } /* 12px */
+  .space-md { @apply my-4; } /* 16px */
+  .space-lg { @apply my-6; } /* 24px */
+  .space-xl { @apply my-8; } /* 32px */
+}

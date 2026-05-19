@@ -1,0 +1,59 @@
+{
+  "name": "todo-frontend",
+  "version": "1.0.0",
+  "description": "Frontend for the Todo App with React and TypeScript",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "keywords": [
+    "react",
+    "typescript",
+    "todo",
+    "frontend",
+    "nextjs"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@headlessui/react": "^1.7.19",
+    "@headlessui/tailwindcss": "^0.2.2",
+    "@heroicons/react": "^2.0.18",
+    "axe-core": "^4.9.1",
+    "axios": "^1.6.0",
+    "clsx": "^2.1.0",
+    "date-fns": "^4.1.0",
+    "framer-motion": "^12.26.2",
+    "lucide-react": "^0.562.0",
+    "next": "^14.0.0",
+    "react": "^18.2.0",
+    "react-dnd": "^16.0.1",
+    "react-dnd-html5-backend": "^16.0.1",
+    "react-dom": "^18.2.0",
+    "react-hook-form": "^7.47.0",
+    "react-router-dom": "^6.8.0",
+    "react-virtualized-auto-sizer": "^1.0.26",
+    "react-window": "^1.8.10",
+    "recharts": "^3.7.0",
+    "tailwind-merge": "^2.2.0",
+    "web-vitals": "^3.5.2",
+    "zustand": "^4.4.7"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
+    "@types/react-window": "^1.8.8",
+    "@types/recharts": "^1.8.29",
+    "autoprefixer": "^10.4.16",
+    "eslint": "^8.0.0",
+    "eslint-config-next": "^14.0.0",
+    "lighthouse": "^11.3.0",
+    "postcss": "^8.4.31",
+    "tailwindcss": "^3.3.0",
+    "typescript": "^5.0.0"
+  }
+}

@@ -1,0 +1,144 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---------------- Global Reset ---------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ---------------- Root Theme ---------------- */
+:root {
+  --background-color: #0D0E0E;
+  --foreground-color: #FFFFFF;
+}
+
+/* ---------------- Base Layout ---------------- */
+html,
+body {
+  width: 100%;
+  min-height: 100%;
+  background-color: var(--background-color);
+  color: var(--foreground-color);
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* ---------------- Optional Dark Scheme Sync ---------------- */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background-color: #0D0E0E;
+    --foreground-color: #FFFFFF;
+  }
+}
+
+/* ---------------- Glassmorphism Background ---------------- */
+.bg-glass-pattern {
+  background-image:
+    radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.05) 0%, transparent 20%),
+    radial-gradient(circle at 90% 80%, rgba(255, 255, 255, 0.05) 0%, transparent 20%),
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.03) 0%, transparent 30%);
+  background-size: cover;
+  background-position: center;
+}
+
+/* ---------------- Animations ---------------- */
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-float-delay-500 {
+  animation: float 6s ease-in-out infinite;
+  animation-delay: 0.5s;
+}
+
+.animate-float-delay-1000 {
+  animation: float 6s ease-in-out infinite;
+  animation-delay: 1s;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+/* Bounce animation for typing indicators */
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.animate-bounce-delayed-0 {
+  animation: bounce 1.2s infinite;
+  animation-delay: 0ms;
+}
+
+.animate-bounce-delayed-300 {
+  animation: bounce 1.2s infinite;
+  animation-delay: 300ms;
+}
+
+.animate-bounce-delayed-600 {
+  animation: bounce 1.2s infinite;
+  animation-delay: 600ms;
+}
+
+/* Smooth transitions for chat elements */
+.chat-message-enter {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.chat-message-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 300ms, transform 300ms;
+}
+
+/* Pulse animation for new messages */
+.pulse-on-new {
+  animation: pulse 0.5s ease-in;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(79, 70, 229, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(79, 70, 229, 0);
+  }
+}
+
+/* Slide in animation for quick actions */
+.slide-in-from-bottom {
+  animation: slideInFromBottom 0.3s ease-out forwards;
+}
+
+@keyframes slideInFromBottom {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

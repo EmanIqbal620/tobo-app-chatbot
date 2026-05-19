@@ -1,0 +1,171 @@
+/* High Contrast Mode Styles */
+@media (prefers-contrast: high) {
+  /* High contrast color scheme */
+  :root {
+    --hc-bg-primary: #000000;
+    --hc-bg-secondary: #111111;
+    --hc-text-primary: #ffffff;
+    --hc-text-secondary: #cccccc;
+    --hc-accent: #ffff00; /* Bright yellow for high visibility */
+    --hc-border: #ffffff;
+    --hc-link: #00ffff; /* Cyan for links */
+    --hc-focus: #ff00ff; /* Magenta for focus indicators */
+  }
+
+  /* Apply high contrast theme to all elements */
+  *,
+  *::before,
+  *::after {
+    background-color: var(--hc-bg-primary) !important;
+    color: var(--hc-text-primary) !important;
+    border-color: var(--hc-border) !important;
+  }
+
+  /* Specific element adjustments */
+  body {
+    background-color: var(--hc-bg-primary) !important;
+    color: var(--hc-text-primary) !important;
+  }
+
+  a,
+  button,
+  input,
+  textarea,
+  select {
+    background-color: var(--hc-bg-secondary) !important;
+    color: var(--hc-text-primary) !important;
+    border: 2px solid var(--hc-border) !important;
+  }
+
+  /* Links */
+  a {
+    color: var(--hc-link) !important;
+    text-decoration: underline !important;
+  }
+
+  /* Focus indicators - make them very prominent */
+  *:focus {
+    outline: 3px solid var(--hc-focus) !important;
+    outline-offset: 2px !important;
+  }
+
+  /* Buttons */
+  button {
+    background-color: var(--hc-accent) !important;
+    color: var(--hc-bg-primary) !important;
+    font-weight: bold !important;
+  }
+
+  button:hover,
+  button:focus {
+    background-color: var(--hc-bg-primary) !important;
+    color: var(--hc-accent) !important;
+    border-color: var(--hc-accent) !important;
+  }
+
+  /* Form elements */
+  input,
+  textarea,
+  select {
+    background-color: var(--hc-bg-primary) !important;
+    border: 2px solid var(--hc-border) !important;
+  }
+
+  input:focus,
+  textarea:focus,
+  select:focus {
+    border-color: var(--hc-focus) !important;
+    box-shadow: 0 0 0 2px var(--hc-focus) !important;
+  }
+
+  /* Cards and containers */
+  .card,
+  .panel,
+  .modal,
+  .sidebar,
+  .navbar {
+    border: 2px solid var(--hc-border) !important;
+    background-color: var(--hc-bg-secondary) !important;
+  }
+
+  /* Icons should be visible */
+  svg,
+  img {
+    filter: invert(100%) !important;
+  }
+
+  /* Remove decorative backgrounds */
+  .bg-pattern,
+  .gradient-bg {
+    background: none !important;
+  }
+}
+
+/* High contrast mode via CSS class */
+.high-contrast-enabled {
+  /* High contrast color scheme */
+  --hc-bg-primary: #000000;
+  --hc-bg-secondary: #111111;
+  --hc-text-primary: #ffffff;
+  --hc-text-secondary: #cccccc;
+  --hc-accent: #ffff00; /* Bright yellow for high visibility */
+  --hc-border: #ffffff;
+  --hc-link: #00ffff; /* Cyan for links */
+  --hc-focus: #ff00ff; /* Magenta for focus indicators */
+}
+
+.high-contrast-enabled *,
+.high-contrast-enabled *::before,
+.high-contrast-enabled *::after {
+  background-color: var(--hc-bg-primary) !important;
+  color: var(--hc-text-primary) !important;
+  border-color: var(--hc-border) !important;
+}
+
+.high-contrast-enabled a,
+.high-contrast-enabled button,
+.high-contrast-enabled input,
+.high-contrast-enabled textarea,
+.high-contrast-enabled select {
+  background-color: var(--hc-bg-secondary) !important;
+  color: var(--hc-text-primary) !important;
+  border: 2px solid var(--hc-border) !important;
+}
+
+.high-contrast-enabled a {
+  color: var(--hc-link) !important;
+  text-decoration: underline !important;
+}
+
+.high-contrast-enabled *:focus {
+  outline: 3px solid var(--hc-focus) !important;
+  outline-offset: 2px !important;
+}
+
+.high-contrast-enabled button {
+  background-color: var(--hc-accent) !important;
+  color: var(--hc-bg-primary) !important;
+  font-weight: bold !important;
+}
+
+.high-contrast-enabled button:hover,
+.high-contrast-enabled button:focus {
+  background-color: var(--hc-bg-primary) !important;
+  color: var(--hc-accent) !important;
+  border-color: var(--hc-accent) !important;
+}
+
+/* Ensure important UI elements are visible */
+.high-contrast-enabled .sr-only:not(:focus):not(:active) {
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+/* Focusable elements */
+.high-contrast-enabled .focus\:outline-none:focus {
+  outline: 3px solid var(--hc-focus) !important;
+}

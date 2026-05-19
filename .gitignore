@@ -1,0 +1,16 @@
+# Node modules (huge folder, managed via package.json)
+node_modules/
+
+# Next.js build folder (Vercel rebuilds automatically)
+.next/
+
+# Next.js static export folder (optional)
+out/
+
+# Environment variables (keep secrets safe)
+.env
+.env.*
+
+# OS files
+.DS_Store
+Thumbs.db
