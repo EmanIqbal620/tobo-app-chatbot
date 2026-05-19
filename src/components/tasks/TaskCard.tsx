@@ -38,157 +38,188 @@ const TaskCardComponent: React.FC<TaskCardProps> = ({
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
-      case 'high': return theme.mode === 'dark' ? '#ef4444' : '#dc2626';
-      case 'medium': return theme.mode === 'dark' ? '#f59e0b' : '#d97706';
-      case 'low': return theme.mode === 'dark' ? '#10b981' : '#059669';
-      default: return theme.colors.border;
+      case 'high': return 'bg-red-500';
+      case 'medium': return 'bg-yellow-500';
+      case 'low': return 'bg-green-500';
+      default: return 'bg-gray-500';
     }
   };
 
-  const cardBackground = theme.mode === 'dark'
-    ? task.isCompleted ? `${theme.colors.background}95` : `${theme.colors.surface}95`
-    : task.isCompleted ? '#f1f5f9' : '#ffffff';
-
-  const textColor = task.isCompleted
-    ? theme.colors.text.muted
-    : theme.colors.text.primary;
+  const cardBg = theme.mode === 'dark'
+    ? task.isCompleted ? 'bg-gray-700/50' : 'bg-gray-800/50'
+    : task.isCompleted ? 'bg-gray-100' : 'bg-white';
 
   const borderColor = task.isCompleted
-    ? '#94a3b8'
+    ? 'border-gray-500'
     : task.priority === 'high'
-      ? '#ef4444'
+      ? 'border-red-500'
       : task.priority === 'medium'
-        ? '#f59e0b'
-        : theme.colors.accent;
+        ? 'border-yellow-500'
+        : 'border-purple-500';
 
   return (
     <motion.article
-      className="card rounded-xl p-4 sm:p-5 flex flex-col gap-3 w-full"
+      className="card rounded-xl p-3 sm:p-4 flex flex-col sm:flex-row items-start gap-3"
       style={{
-        background: cardBackground,
-        borderLeft: `5px solid ${borderColor}`,
-        boxShadow: theme.mode === 'dark'
-          ? `0 4px 12px rgba(0,0,0,0.3)`
-          : `0 4px 12px rgba(0,0,0,0.1)`,
+        background: theme.mode === 'dark'
+          ? task.isCompleted ? `${theme.colors.background}80` : `${theme.colors.surface}80`
+          : task.isCompleted ? '#f1f5f9' : '#ffffff', // Light mode backgrounds
+        borderLeft: `4px solid ${
+          task.isCompleted
+            ? '#94a3b8' // gray-400
+            : task.priority === 'high'
+              ? '#ef4444' // red-500
+              : task.priority === 'medium'
+                ? '#f59e0b' // yellow-500
+                : theme.colors.accent // purple/default
+        }`,
+        boxShadow: `0 2px 6px ${theme.colors.accent}33`, // subtle purple shadow
       }}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       whileHover={{
-        y: -3,
-        boxShadow: theme.mode === 'dark'
-          ? `0 8px 20px rgba(0,0,0,0.4)`
-          : `0 8px 20px rgba(0,0,0,0.15)`,
+        y: -5,
+        boxShadow: `0 8px 20px ${theme.colors.accent}55`, // purple hover shadow
       }}
       role="article"
       aria-roledescription="task item"
       aria-label={`Task: ${task.title}, ${task.isCompleted ? 'completed' : 'not completed'}`}
     >
-      {/* Top section: checkbox and title */}
-      <div className="flex items-start gap-3 w-full">
-        {/* Toggle complete */}
-        <button
-          onClick={() => onToggle(task.id)}
-          className="flex-shrink-0 h-6 w-6 rounded-full border-2 flex items-center justify-center transition-all hover:scale-110 mt-0.5"
-          style={{
-            backgroundColor: task.isCompleted ? theme.colors.accent : 'transparent',
-            borderColor: task.isCompleted ? theme.colors.accent : theme.colors.border,
-            color: task.isCompleted ? (theme.mode === 'dark' ? '#000000' : '#ffffff') : theme.colors.text.muted,
-          }}
-          aria-label={task.isCompleted ? 'Mark as incomplete' : 'Mark as complete'}
-          aria-checked={task.isCompleted}
-          role="switch"
-          title={task.isCompleted ? 'Mark as incomplete' : 'Mark as complete'}
-        >
-          {task.isCompleted && <CheckCircleIcon className="h-4 w-4" />}
-        </button>
+      {/* Toggle complete */}
+      <button
+        onClick={() => onToggle(task.id)}
+        className="flex-shrink-0 h-6 w-6 rounded-full border flex items-center justify-center"
+        style={{
+          backgroundColor: task.isCompleted
+            ? `${theme.colors.accent}20` // 20% opacity accent when completed
+            : 'transparent',
+          borderColor: task.isCompleted
+            ? theme.colors.accent
+            : theme.mode === 'dark'
+              ? theme.colors.text.muted
+              : '#9ca3af', // light gray border
+          color: task.isCompleted
+            ? theme.colors.accent
+            : theme.mode === 'dark'
+              ? theme.colors.text.primary
+              : '#374151', // dark gray text
+        }}
+        aria-label={task.isCompleted ? 'Mark as incomplete' : 'Mark as complete'}
+        aria-checked={task.isCompleted}
+        role="switch"
+        title={task.isCompleted ? 'Mark as incomplete' : 'Mark as complete'}
+      >
+        {task.isCompleted && <CheckCircleIcon className="h-4 w-4" />}
+      </button>
 
-        {/* Title and badges */}
-        <div className="flex-1 min-w-0">
-          <div className="flex flex-wrap items-center gap-2 justify-between">
-            <h3
-              className={`text-base sm:text-lg font-bold truncate flex-1 min-w-0 ${task.isCompleted ? 'line-through opacity-60' : ''}`}
-              style={{ color: textColor }}
-              id={`task-title-${task.id}`}
-            >
-              {task.title}
-            </h3>
+      {/* Content */}
+      <div className="flex-1 min-w-0 flex-1">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+          <h3
+            className={`text-base sm:text-lg font-semibold truncate ${task.isCompleted ? 'line-through' : ''}`}
+            style={{
+              color: task.isCompleted
+                ? theme.colors.text.muted // Use muted text for completed tasks
+                : theme.colors.text.primary
+            }}
+            id={`task-title-${task.id}`}
+          >
+            {task.title}
+          </h3>
 
-            <div className="flex items-center gap-2 flex-shrink-0 flex-wrap">
-              {/* Priority indicator */}
-              {showPriorityIndicator && task.priority && (
-                <span
-                  className="px-2.5 py-1 rounded-full text-xs font-bold text-white shadow-sm"
-                  style={{ backgroundColor: getPriorityColor(task.priority) }}
-                  aria-label={`Priority: ${task.priority}`}
-                >
-                  {task.priority.charAt(0).toUpperCase() + task.priority.slice(1)}
-                </span>
-              )}
-
-              {/* Status indicator */}
+          <div className="flex items-center space-x-2 self-start sm:self-center">
+            {/* Priority indicator */}
+            {showPriorityIndicator && task.priority && (
               <span
-                className="px-2.5 py-1 rounded-full text-xs font-bold text-white shadow-sm"
-                style={{ backgroundColor: task.isCompleted ? '#10b981' : '#3b82f6' }}
-                aria-label={`Status: ${task.isCompleted ? 'Complete' : 'Pending'}`}
+                className="px-2 py-0.5 rounded-full text-xs font-medium text-white"
+                style={{
+                  backgroundColor: task.priority === 'high'
+                    ? '#ef4444' // red-500
+                    : task.priority === 'medium'
+                      ? '#f59e0b' // yellow-500
+                      : '#10b981' // green-500 for low
+                }}
+                aria-label={`Priority: ${task.priority}`}
               >
-                {task.isCompleted ? '✓ Done' : '○ Pending'}
+                {task.priority.charAt(0).toUpperCase() + task.priority.slice(1)}
               </span>
-            </div>
+            )}
+
+            {/* Status indicator - Pending or Complete */}
+            <span
+              className="px-2 py-0.5 rounded-full text-xs font-medium text-white"
+              style={{
+                backgroundColor: task.isCompleted
+                  ? '#10b981' // green for completed
+                  : '#3b82f6'  // blue for pending
+              }}
+              aria-label={`Status: ${task.isCompleted ? 'Complete' : 'Pending'}`}
+            >
+              {task.isCompleted ? 'Complete' : 'Pending'}
+            </span>
           </div>
+        </div>
 
         {task.description && (
           <p
-            className="text-xs sm:text-sm mt-2 px-1"
-            style={{ color: theme.colors.text.secondary }}
+            className="text-xs sm:text-sm mt-1"
+            style={{
+              color: task.isCompleted
+                ? theme.colors.text.muted // Use muted text for completed tasks
+                : theme.colors.text.primary
+            }}
             id={`task-description-${task.id}`}
           >
             {task.description}
           </p>
         )}
 
-        {showDueDate && task.dueDate && (
-          <div
-            className="flex items-center text-xs sm:text-sm gap-1.5 mt-2 px-1"
-            style={{ color: theme.colors.text.muted }}
-            aria-label={`Due date: ${new Date(task.dueDate).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' })}`}
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>
-            <span className="font-medium">Due: {new Date(task.dueDate).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' })}</span>
-          </div>
-        )}
+        <div className="flex flex-wrap items-center mt-2 sm:mt-3 gap-2" role="group" aria-label="Task details">
+          {showDueDate && task.dueDate && (
+            <div
+              className="flex items-center text-xs sm:text-sm gap-1"
+              style={{
+                color: theme.colors.text.muted
+              }}
+              aria-label={`Due date: ${new Date(task.dueDate).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' })}`}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" style={{ color: 'currentColor' }}>
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              <span>Due: {new Date(task.dueDate).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' })}</span>
+            </div>
+          )}
         </div>
+      </div>
 
-        {/* Actions */}
-        <div className="flex items-center gap-2 mt-2 pt-2 border-t" style={{ borderColor: theme.colors.border }}>
-          <button
-            onClick={() => onEdit(task.id)}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all hover:scale-105"
-            style={{
-              backgroundColor: `${theme.colors.accent}20`,
-              color: theme.colors.accent,
-            }}
-            aria-label="Edit task"
-            aria-describedby={`task-title-${task.id}`}
-          >
-            <PencilIcon className="h-3.5 w-3.5" />
-            <span>Edit</span>
-          </button>
-          <button
-            onClick={() => onDelete(task.id)}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all hover:scale-105"
-            style={{
-              backgroundColor: '#ef444420',
-              color: '#ef4444',
-            }}
-            aria-label="Delete task"
-            aria-describedby={`task-title-${task.id}`}
-          >
-            <TrashIcon className="h-3.5 w-3.5" />
-            <span>Delete</span>
-          </button>
-        </div>
+      {/* Actions */}
+      <div className="flex flex-row sm:flex-col space-x-2 sm:space-x-0 sm:space-y-2 ml-3 sm:ml-0" role="group" aria-label="Task actions">
+        <button
+          onClick={() => onEdit(task.id)}
+          style={{
+            color: theme.mode === 'dark'
+              ? theme.colors.text.muted
+              : '#6b7280', // gray-600
+          }}
+          className="hover:text-purple-500 dark:hover:text-purple-400 transition-colors"
+          aria-label="Edit task"
+          aria-describedby={`task-title-${task.id}`}
+        >
+          <PencilIcon className="h-4 sm:h-5 w-4 sm:w-5" aria-hidden="true" style={{ color: 'currentColor' }} />
+        </button>
+        <button
+          onClick={() => onDelete(task.id)}
+          style={{
+            color: theme.mode === 'dark'
+              ? theme.colors.text.muted
+              : '#6b7280', // gray-600
+          }}
+          className="hover:text-red-500 transition-colors"
+          aria-label="Delete task"
+          aria-describedby={`task-title-${task.id}`}
+        >
+          <TrashIcon className="h-4 sm:h-5 w-4 sm:w-5" aria-hidden="true" style={{ color: 'currentColor' }} />
+        </button>
       </div>
     </motion.article>
   );

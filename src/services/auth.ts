@@ -81,7 +81,7 @@ export async function logoutUser(): Promise<{ message: string }> {
  */
 export async function getUserProfile(): Promise<UserRegistrationResponse> {
   try {
-    return await apiClient.get<UserRegistrationResponse>('/user/profile');
+    return await apiClient.get<UserRegistrationResponse>('/api/user/profile');
   } catch (error) {
     console.error('Get user profile error:', error);
     throw error;
@@ -95,7 +95,7 @@ export async function getUserProfile(): Promise<UserRegistrationResponse> {
  */
 export async function validateUserAccess(userId: string): Promise<UserValidateResponse> {
   try {
-    return await apiClient.get<UserValidateResponse>(`/user/${userId}/validate`);
+    return await apiClient.get<UserValidateResponse>(`/api/user/${userId}/validate`);
   } catch (error) {
     console.error('User access validation error:', error);
     throw error;
