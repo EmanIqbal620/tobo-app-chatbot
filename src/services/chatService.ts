@@ -21,9 +21,13 @@ class ChatService {
 
   constructor() {
     // Use the backend API URL, defaulting to localhost:8000 for development
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+    const rawUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+    // Remove trailing slash to prevent double slashes
+    const apiUrl = rawUrl.replace(/\/+$/, '');
+    // If relative path, use direct backend URL (avoids Vercel rewrite auth header issue)
+    const finalUrl = apiUrl.startsWith('/') ? 'https://emaniqbal-todoapp.hf.space' : apiUrl;
     // Ensure we have the /api suffix for backend endpoints
-    this.baseUrl = apiUrl.endsWith('/api') ? apiUrl : `${apiUrl}/api`;
+    this.baseUrl = finalUrl.endsWith('/api') ? finalUrl : `${finalUrl}/api`;
   }
 
   async sendMessage(userId: string, request: ChatRequest): Promise<ChatResponse> {
