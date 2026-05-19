@@ -4,7 +4,7 @@ emoji: ✅
 colorFrom: blue
 colorTo: indigo
 sdk: static
-app_build_command: npm run build
+app_build_command: npm ci --legacy-peer-deps && npm run build
 app_file: out/index.html
 ---
 
