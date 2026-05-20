@@ -3,7 +3,8 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . .
-RUN npm run build
+ENV NODE_OPTIONS="--max-old-space-size=2048"
+RUN npx next build --no-lint
 
 FROM nginx:alpine
 COPY --from=build /app/out /usr/share/nginx/html
