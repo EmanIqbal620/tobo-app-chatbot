@@ -1,7 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Static export for Hugging Face Spaces
-  output: 'export',
+  // Docker deployment for Hugging Face Spaces
   
   // Production optimizations
   reactStrictMode: true,
