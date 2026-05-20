@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, FormEvent } from 'react';
+import React, { FormEvent } from 'react';
 import { useTheme } from '@/contexts/ThemeContext';
 
 interface MessageInputProps {
@@ -22,7 +22,7 @@ const MessageInput: React.FC<MessageInputProps> = ({ onSendMessage, inputValue, 
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex items-center gap-3 w-full">
+    <form onSubmit={handleSubmit} className="flex items-center space-x-1 w-full">
       <div className="relative flex-1">
         <input
           type="text"
@@ -30,26 +30,23 @@ const MessageInput: React.FC<MessageInputProps> = ({ onSendMessage, inputValue, 
           onChange={(e) => setInputValue(e.target.value)}
           placeholder="Ask to manage tasks..."
           disabled={isLoading}
-          className="w-full pl-5 pr-12 py-4 rounded-2xl border-2 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm font-medium transition-all"
+          className="w-full pl-3 pr-10 py-2 rounded-full border focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 text-sm"
           style={{
-            backgroundColor: theme.mode === 'dark' ? theme.colors.surface : '#ffffff',
+            backgroundColor: theme.colors.background, // Use theme background for both modes
             borderColor: theme.colors.border,
-            color: theme.colors.text.primary,
-            boxShadow: theme.mode === 'dark' 
-              ? '0 2px 8px rgba(0,0,0,0.2)' 
-              : '0 2px 8px rgba(0,0,0,0.08)',
+            color: theme.colors.text.primary, // Use theme text for both modes
           }}
         />
         {inputValue && (
           <button
             type="button"
             onClick={() => setInputValue('')}
-            className="absolute right-3 top-1/2 transform -translate-y-1/2 p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-all"
+            className="absolute right-8 top-1/2 transform -translate-y-1/2 p-1 rounded-full hover:opacity-70 transition-opacity"
             style={{
-              color: theme.colors.text.muted,
+              color: theme.colors.text.primary // Use theme text for both modes
             }}
           >
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <circle cx="12" cy="12" r="10"></circle>
               <line x1="15" y1="9" x2="9" y2="15"></line>
               <line x1="9" y1="9" x2="15" y2="15"></line>
@@ -60,27 +57,17 @@ const MessageInput: React.FC<MessageInputProps> = ({ onSendMessage, inputValue, 
       <button
         type="submit"
         disabled={isLoading || !inputValue.trim()}
-        className="w-14 h-14 rounded-2xl transition-all transform hover:scale-110 disabled:opacity-40 disabled:transform-none disabled:cursor-not-allowed flex items-center justify-center shadow-xl"
+        className="p-2 rounded-full font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 transition-opacity hover:opacity-90 disabled:opacity-50 flex items-center justify-center"
         style={{
-          backgroundColor: inputValue.trim() && !isLoading ? theme.colors.accent : theme.colors.border,
-          color: inputValue.trim() && !isLoading ? (theme.mode === 'dark' ? '#000000' : '#ffffff') : theme.colors.text.muted,
-          boxShadow: inputValue.trim() && !isLoading 
-            ? `0 4px 16px ${theme.colors.accent}66` 
-            : 'none',
+          backgroundColor: theme.colors.accent,
+          color: '#ffffff',
         }}
         title="Send message"
       >
-        {isLoading ? (
-          <svg className="animate-spin h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-          </svg>
-        ) : (
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M22 2L11 13"></path>
-            <path d="M22 2L15 22L11 13L2 9L22 2Z" fill="currentColor"></path>
-          </svg>
-        )}
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <line x1="22" y1="2" x2="11" y2="13"></line>
+          <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+        </svg>
       </button>
     </form>
   );

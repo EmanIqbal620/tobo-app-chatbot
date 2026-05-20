@@ -25,9 +25,22 @@ interface TaskProviderProps {
 
 export const TaskProvider = ({ children }: TaskProviderProps) => {
   const [tasks, setTasks] = useState<Task[]>([])
-  const [loading, setLoading] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(false) // Start with false since we'll conditionally fetch
   const [error, setError] = useState<string | null>(null)
-  const { isAuthenticated, loading: authLoading } = useAuth()
+  const { isAuthenticated, loading: authLoading } = useAuth() // Get authentication status and loading state
+
+  // Fetch tasks only when user is authenticated and auth state is loaded
+  useEffect(() => {
+    if (!authLoading) { // Only proceed when auth state is loaded
+      if (isAuthenticated()) {
+        fetchTasks()
+      } else {
+        // Reset tasks when user is not authenticated
+        setTasks([])
+        setError(null)
+      }
+    }
+  }, [isAuthenticated, authLoading]) // Only re-run when auth state changes
 
   const fetchTasks = async () => {
     try {
@@ -36,29 +49,21 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
       const tasksData = await taskService.getAll()
       setTasks(tasksData)
     } catch (err: any) {
+      // Check if it's an authentication error and handle accordingly
       if (err.response?.status === 401 || err.response?.status === 403) {
         setError('Authentication required. Please log in.')
+        // Only clear tasks on auth errors to avoid flickering on other network errors
         setTasks([])
       } else {
         setError(err.message || 'Failed to fetch tasks')
+        // For network errors, we might want to keep the existing tasks displayed
+        // rather than clearing them, to avoid flickering
         console.error('Error fetching tasks:', err)
       }
     } finally {
       setLoading(false)
     }
   }
-
-  // Fetch tasks only when user is authenticated and auth state is loaded
-  useEffect(() => {
-    if (!authLoading) {
-      if (isAuthenticated()) {
-        fetchTasks()
-      } else {
-        setTasks([])
-        setError(null)
-      }
-    }
-  }, [isAuthenticated, authLoading]) // Removed fetchTasks from dependencies
 
   const createTask = async (taskData: CreateTaskRequest) => {
     try {

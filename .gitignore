@@ -9,8 +9,15 @@ out/
 
 # Environment variables (keep secrets safe)
 .env
-.env.*
+.env.local
+.env.production
 
 # OS files
 .DS_Store
 Thumbs.db
+
+# Build artifacts
+tsconfig.tsbuildinfo
+
+# Screenshots
+Screenshot*.png

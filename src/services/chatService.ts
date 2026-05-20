@@ -20,12 +20,13 @@ class ChatService {
   private baseUrl: string;
 
   constructor() {
-    // Use the backend API URL, defaulting to localhost:8000 for development
-    const rawUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+    // Use the backend API URL, defaulting to live production URL
+    const rawUrl = process.env.NEXT_PUBLIC_API_URL || 'https://emaniqbal-phase-3-chatbot.hf.space';
     // Remove trailing slash to prevent double slashes
     const apiUrl = rawUrl.replace(/\/+$/, '');
-    // If relative path, use direct backend URL (avoids Vercel rewrite auth header issue)
-    const finalUrl = apiUrl.startsWith('/') ? 'https://emaniqbal-todoapp.hf.space' : apiUrl;
+    // If relative path (Vercel rewrite), use env var or fallback to raw URL
+    const fallbackUrl = apiUrl;
+    const finalUrl = apiUrl.startsWith('/') ? fallbackUrl : apiUrl;
     // Ensure we have the /api suffix for backend endpoints
     this.baseUrl = finalUrl.endsWith('/api') ? finalUrl : `${finalUrl}/api`;
   }
@@ -39,8 +40,8 @@ class ChatService {
         throw new Error('No authentication token found');
       }
 
-      // Use the regular chat endpoint (works reliably)
-      const response = await fetch(`${this.baseUrl}/chat/`, {
+      // Use the regular chat endpoint with user_id in path
+      const response = await fetch(`${this.baseUrl}/chat/${userId}`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

@@ -99,6 +99,22 @@ const Sidebar: React.FC<SidebarProps> = ({ className = '' }) => {
           </li>
           <li>
             <Link
+              href="/chat"
+              className="flex items-center p-3 rounded-lg transition-all duration-200 hover:bg-surface-600 group"
+              style={{
+                color: theme.colors.text.primary,
+                backgroundColor: 'transparent'
+              }}
+            >
+              <div
+                className="w-1 h-6 rounded-r mr-3"
+                style={{ backgroundColor: theme.colors.accent }}
+              />
+              <span className="ml-2">AI Assistant</span>
+            </Link>
+          </li>
+          <li>
+            <Link
               href="/settings"
               className="flex items-center p-3 rounded-lg transition-all duration-200 hover:bg-surface-600 group"
               style={{

@@ -1,14 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Static export for Hugging Face Spaces
+  output: 'export',
+  
   // Production optimizations
   reactStrictMode: true,
   swcMinify: true,
   
   // Image optimization
   images: {
-    unoptimized: false, // Enable optimization for better performance
-    deviceSizes: [640, 750, 828, 1080, 1200],
-    imageSizes: [16, 32, 48, 64, 96],
+    unoptimized: true, // Required for static export
   },
   
   // Enable compression

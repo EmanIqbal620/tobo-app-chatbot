@@ -23,7 +23,7 @@ const DashboardPage: React.FC = () => {
   const { showLoading, hideLoading } = useLoading();
   const { showToast } = useToast();
   const { tasks, loading, error, createTask, updateTask, toggleTaskCompletion, deleteTask, fetchTasks } = useTask();
-  const { isAuthenticated, loading: authLoading } = useAuth();
+  const { isAuthenticated } = useAuth();
   const [filteredTasks, setFilteredTasks] = useState<Task[]>([]);
   const [filter, setFilter] = useState<'all' | 'active' | 'completed'>('all');
   const [sortBy, setSortBy] = useState<'dateCreated' | 'dueDate' | 'priority' | 'title'>('dateCreated');
@@ -31,19 +31,11 @@ const DashboardPage: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentTask, setCurrentTask] = useState<Task | null>(null);
 
-  // Wait for auth to be ready before fetching tasks
-  useEffect(() => {
-    if (!authLoading && isAuthenticated()) {
-      fetchTasks();
-    }
-  }, [authLoading, isAuthenticated]);
-
   // Calculate statistics
-  const tasksList = tasks || [];
-  const totalTasks = tasksList.length;
-  const completedTasks = tasksList.filter(task => task.is_completed).length;
+  const totalTasks = tasks.length;
+  const completedTasks = tasks.filter(task => task.is_completed).length;
   const pendingTasks = totalTasks - completedTasks;
-  const overdueTasks = tasksList.filter(task =>
+  const overdueTasks = tasks.filter(task =>
     !task.is_completed && task.due_date && new Date(task.due_date) < new Date()
   ).length;
 
@@ -52,8 +44,7 @@ const DashboardPage: React.FC = () => {
 
   // Apply filters and sorting
   useEffect(() => {
-    const tasksList = tasks || [];
-    let result = [...tasksList];
+    let result = [...tasks];
 
     // Apply filter
     if (filter === 'active') {
@@ -110,7 +101,7 @@ const DashboardPage: React.FC = () => {
   };
 
   const handleEditTask = (taskId: string) => {
-    const task = (tasks || []).find(t => t.id === taskId);
+    const task = tasks.find(t => t.id === taskId);
     setCurrentTask(task || null);
     setIsModalOpen(true);
   };
@@ -287,7 +278,7 @@ const DashboardPage: React.FC = () => {
                 <div className="h-64 bg-surface-600 rounded w-full" style={{ backgroundColor: theme.colors.surface }}></div>
               </motion.div>
             ) : (
-              <TaskAnalytics tasks={tasks || []} />
+              <TaskAnalytics tasks={tasks} />
             )}
           </div>
 
@@ -320,7 +311,7 @@ const DashboardPage: React.FC = () => {
               </motion.div>
             ) : (
               <SmartSuggestions
-                tasks={tasks || []}
+                tasks={tasks}
               />
             )}
           </div>

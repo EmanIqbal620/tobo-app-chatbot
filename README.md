@@ -3,8 +3,9 @@ title: Todo App Frontend
 emoji: ✅
 colorFrom: blue
 colorTo: indigo
-sdk: docker
-runtime: huggingface_hub
+sdk: static
+app_build_command: npm run build
+app_file: out/index.html
 ---
 
 # Todo App Frontend
@@ -32,4 +33,3 @@ This frontend connects to the Todo App API backend. Make sure to configure the A
 ## About
 
 Built with Next.js, TypeScript, Tailwind CSS, and React with a focus on user experience and modern design principles."# todo-full-stack-phase-2" 
-"# tobo-app-chatbot" 

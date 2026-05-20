@@ -4,8 +4,7 @@ import { Task, CreateTaskRequest, UpdateTaskRequest } from '@/types/task'
 class TaskService {
   async getAll(): Promise<Task[]> {
     const response = await api.get('/tasks')
-    // Backend returns {tasks: [...]}, so extract the tasks array
-    return response.data.tasks || []
+    return response.data.tasks
   }
 
   async getById(id: string): Promise<Task> {

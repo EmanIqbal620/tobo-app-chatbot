@@ -90,11 +90,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   }
 
   const register = async (name: string, email: string, password: string) => {
-    const response = await authService.register(name, email, password)
-    tokenManager.setTokens(response.access_token, response.refresh_token)
+    // Register the user (backend returns user data, no token)
+    await authService.register(name, email, password)
+    // Auto-login after registration to get JWT tokens
+    const loginResponse = await authService.login(email, password)
+    tokenManager.setTokens(loginResponse.access_token, loginResponse.refresh_token)
 
     // Decode the token to get user info
-    const decodedToken = decodeJWT(response.access_token);
+    const decodedToken = decodeJWT(loginResponse.access_token);
     if (decodedToken) {
       setUser({
         id: decodedToken.sub || decodedToken.user_id || 'unknown',

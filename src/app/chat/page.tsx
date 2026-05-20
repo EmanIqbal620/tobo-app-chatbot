@@ -48,7 +48,7 @@ const ChatPage: React.FC = () => {
 
   return (
     <DashboardLayout>
-      <div className="mb-6">
+      <div className="mb-8">
         <h1
           className="text-3xl font-bold"
           style={{ color: theme.colors.text.primary }}
@@ -63,11 +63,12 @@ const ChatPage: React.FC = () => {
         </p>
       </div>
 
-      <div className="rounded-xl p-4 border"
+      <div className="rounded-xl p-6 border"
         style={{
           backgroundColor: theme.colors.surface,
           borderColor: theme.colors.border,
-          height: 'calc(100vh - 180px)',
+          height: 'calc(100vh - 200px)',
+          minHeight: '500px'
         }}
       >
         <ChatInterface userId={user.id} token={token} tasks={tasks} />

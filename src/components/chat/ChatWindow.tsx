@@ -221,7 +221,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ user, conversationId, onConvers
             className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0"
             style={{
               backgroundColor: theme.colors.accent,
-              color: theme.colors.accent,
+              color: '#ffffff',
             }}
           >
             AI

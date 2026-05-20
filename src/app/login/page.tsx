@@ -7,6 +7,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/contexts/ToastContext';
 import { NotificationTypeEnum } from '@/types/ui';
 import { useTheme } from '@/contexts/ThemeContext';
+import Link from 'next/link';
 import { UserCheck } from 'lucide-react';
 
 const LoginPage: React.FC = () => {
@@ -146,13 +147,13 @@ const LoginPage: React.FC = () => {
           <div className="mt-6 text-center">
             <p style={{ color: theme.colors.text.secondary }}>
               Don't have an account?{' '}
-              <a
+              <Link
                 href="/register"
                 className="hover:underline"
                 style={{ color: theme.colors.accent }}
               >
                 Sign up
-              </a>
+              </Link>
             </p>
           </div>
         </div>
