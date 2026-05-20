@@ -3,7 +3,7 @@ import { Task, CreateTaskRequest, UpdateTaskRequest } from '@/types/task'
 
 class TaskService {
   async getAll(): Promise<Task[]> {
-    const response = await api.get('/tasks')
+    const response = await api.get('/tasks/')
     return response.data.tasks
   }
 

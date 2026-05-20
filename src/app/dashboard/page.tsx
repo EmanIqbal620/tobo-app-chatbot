@@ -15,6 +15,7 @@ import { useLoading } from '@/contexts/LoadingContext';
 import { useToast } from '@/contexts/ToastContext';
 import { useTask } from '@/contexts/TaskContext';
 import { useAuth } from '@/contexts/AuthContext';
+import { useRouter } from 'next/navigation';
 import { NotificationTypeEnum } from '@/types/ui';
 import { Task, CreateTaskRequest, UpdateTaskRequest } from '@/types/task';
 
@@ -24,6 +25,7 @@ const DashboardPage: React.FC = () => {
   const { showToast } = useToast();
   const { tasks, loading, error, createTask, updateTask, toggleTaskCompletion, deleteTask, fetchTasks } = useTask();
   const { isAuthenticated } = useAuth();
+  const router = useRouter();
   const [filteredTasks, setFilteredTasks] = useState<Task[]>([]);
   const [filter, setFilter] = useState<'all' | 'active' | 'completed'>('all');
   const [sortBy, setSortBy] = useState<'dateCreated' | 'dueDate' | 'priority' | 'title'>('dateCreated');
@@ -85,10 +87,11 @@ const DashboardPage: React.FC = () => {
   }, [tasks, filter, sortBy, searchTerm]);
 
   useEffect(() => {
-    if (isAuthenticated()) {
+    if (!isAuthenticated()) {
+      router.push('/login');
+    } else {
       fetchTasks();
     }
-
   }, [isAuthenticated]); // Removed fetchTasks from dependency array to prevent infinite loop
 
   const handleToggleTask = async (taskId: string) => {
