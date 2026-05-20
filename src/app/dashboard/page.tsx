@@ -24,7 +24,7 @@ const DashboardPage: React.FC = () => {
   const { showLoading, hideLoading } = useLoading();
   const { showToast } = useToast();
   const { tasks, loading, error, createTask, updateTask, toggleTaskCompletion, deleteTask, fetchTasks } = useTask();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, loading: authLoading } = useAuth();
   const router = useRouter();
   const [filteredTasks, setFilteredTasks] = useState<Task[]>([]);
   const [filter, setFilter] = useState<'all' | 'active' | 'completed'>('all');
@@ -87,12 +87,13 @@ const DashboardPage: React.FC = () => {
   }, [tasks, filter, sortBy, searchTerm]);
 
   useEffect(() => {
+    if (authLoading) return;
     if (!isAuthenticated()) {
       router.push('/login');
     } else {
       fetchTasks();
     }
-  }, [isAuthenticated]); // Removed fetchTasks from dependency array to prevent infinite loop
+  }, [isAuthenticated, authLoading]);
 
   const handleToggleTask = async (taskId: string) => {
     try {
