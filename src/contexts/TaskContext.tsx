@@ -3,7 +3,8 @@
 import { createContext, useContext, ReactNode, useState, useEffect } from 'react'
 import { Task, CreateTaskRequest, UpdateTaskRequest } from '@/types/task'
 import { taskService } from '@/services/taskService'
-import { useAuth } from './AuthContext' // Import the AuthContext
+import { useAuth } from './AuthContext'
+import { tokenManager } from '@/utils/tokenManager'
 
 interface TaskContextType {
   tasks: Task[]
@@ -27,20 +28,16 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
   const [tasks, setTasks] = useState<Task[]>([])
   const [loading, setLoading] = useState<boolean>(false) // Start with false since we'll conditionally fetch
   const [error, setError] = useState<string | null>(null)
-  const { isAuthenticated, loading: authLoading } = useAuth() // Get authentication status and loading state
+  const { loading: authLoading } = useAuth()
 
-  // Fetch tasks only when user is authenticated and auth state is loaded
   useEffect(() => {
-    if (!authLoading) { // Only proceed when auth state is loaded
-      if (isAuthenticated()) {
-        fetchTasks()
-      } else {
-        // Reset tasks when user is not authenticated
-        setTasks([])
-        setError(null)
-      }
+    if (!authLoading && tokenManager.isAuthenticated()) {
+      fetchTasks()
+    } else if (!authLoading) {
+      setTasks([])
+      setError(null)
     }
-  }, [isAuthenticated, authLoading]) // Only re-run when auth state changes
+  }, [authLoading])
 
   const fetchTasks = async () => {
     try {

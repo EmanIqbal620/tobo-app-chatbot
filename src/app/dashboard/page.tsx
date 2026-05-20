@@ -14,16 +14,15 @@ import { useTheme } from '@/contexts/ThemeContext';
 import { useLoading } from '@/contexts/LoadingContext';
 import { useToast } from '@/contexts/ToastContext';
 import { useTask } from '@/contexts/TaskContext';
-import { useAuth } from '@/contexts/AuthContext';
 import { NotificationTypeEnum } from '@/types/ui';
 import { Task, CreateTaskRequest, UpdateTaskRequest } from '@/types/task';
+import { tokenManager } from '@/utils/tokenManager';
 
 const DashboardPage: React.FC = () => {
   const { theme } = useTheme();
   const { showLoading, hideLoading } = useLoading();
   const { showToast } = useToast();
   const { tasks, loading, error, createTask, updateTask, toggleTaskCompletion, deleteTask, fetchTasks } = useTask();
-  const { isAuthenticated } = useAuth();
   const [filteredTasks, setFilteredTasks] = useState<Task[]>([]);
   const [filter, setFilter] = useState<'all' | 'active' | 'completed'>('all');
   const [sortBy, setSortBy] = useState<'dateCreated' | 'dueDate' | 'priority' | 'title'>('dateCreated');
@@ -85,11 +84,10 @@ const DashboardPage: React.FC = () => {
   }, [tasks, filter, sortBy, searchTerm]);
 
   useEffect(() => {
-    if (isAuthenticated()) {
+    if (tokenManager.isAuthenticated()) {
       fetchTasks();
     }
-
-  }, [isAuthenticated]); // Removed fetchTasks from dependency array to prevent infinite loop
+  }, [])
 
   const handleToggleTask = async (taskId: string) => {
     try {

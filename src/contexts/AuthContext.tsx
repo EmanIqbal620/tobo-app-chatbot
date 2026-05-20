@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useContext, useEffect, useState, ReactNode } from 'react'
+import { createContext, useContext, useEffect, useState, useCallback, useMemo, ReactNode } from 'react'
 import { User } from '@/types/user'
 import { authService } from '@/services/authService'
 import { tokenManager } from '@/utils/tokenManager'
@@ -114,19 +114,23 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     setUser(null)
   }
 
-  const isAuthenticated = () => {
+  const isAuthenticated = useCallback(() => {
     return tokenManager.isAuthenticated()
-  }
+  }, [])
 
-  const value = {
+  const getToken = useCallback(() => {
+    return tokenManager.getAccessToken()
+  }, [])
+
+  const value = useMemo(() => ({
     user,
     loading,
     login,
     register,
     logout,
     isAuthenticated,
-    getToken: () => tokenManager.getAccessToken(),
-  }
+    getToken,
+  }), [user, loading, login, register, logout, isAuthenticated, getToken])
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }

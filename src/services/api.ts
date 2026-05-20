@@ -2,7 +2,7 @@ import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, InternalAxiosR
 import { getAccessToken, getRefreshToken, setTokens, clearTokens } from '@/utils/tokenManager'
 
 // Direct backend URL - avoids Vercel rewrite auth header issue
-const BACKEND_API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://emaniqbal-phase-3-chatbot.hf.space';
+const BACKEND_API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://emaniqbal-todoapp.hf.space';
 
 // Create the base axios instance
 const api: AxiosInstance = axios.create({

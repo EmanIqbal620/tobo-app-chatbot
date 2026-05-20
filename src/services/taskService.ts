@@ -3,17 +3,17 @@ import { Task, CreateTaskRequest, UpdateTaskRequest } from '@/types/task'
 
 class TaskService {
   async getAll(): Promise<Task[]> {
-    const response = await api.get('/tasks')
+    const response = await api.get('/tasks/')
     return response.data.tasks
+  }
+
+  async create(taskData: CreateTaskRequest): Promise<Task> {
+    const response = await api.post('/tasks/', taskData)
+    return response.data
   }
 
   async getById(id: string): Promise<Task> {
     const response = await api.get(`/tasks/${id}`)
-    return response.data
-  }
-
-  async create(taskData: CreateTaskRequest): Promise<Task> {
-    const response = await api.post('/tasks', taskData)
     return response.data
   }
 

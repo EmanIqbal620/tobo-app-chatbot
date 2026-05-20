@@ -21,7 +21,7 @@ class ChatService {
 
   constructor() {
     // Use the backend API URL, defaulting to live production URL
-    const rawUrl = process.env.NEXT_PUBLIC_API_URL || 'https://emaniqbal-phase-3-chatbot.hf.space';
+    const rawUrl = process.env.NEXT_PUBLIC_API_URL || 'https://emaniqbal-todoapp.hf.space';
     // Remove trailing slash to prevent double slashes
     const apiUrl = rawUrl.replace(/\/+$/, '');
     // If relative path (Vercel rewrite), use env var or fallback to raw URL
@@ -40,8 +40,8 @@ class ChatService {
         throw new Error('No authentication token found');
       }
 
-      // Use the regular chat endpoint with user_id in path
-      const response = await fetch(`${this.baseUrl}/chat/${userId}`, {
+      // Use the regular chat endpoint (user_id from JWT)
+      const response = await fetch(`${this.baseUrl}/chat/`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
